@@ -138,4 +138,4 @@ var serverConfig = _.merge({}, config, {
   }
 });
 
-module.exports = [appConfig, serverConfig];
+module.exports = [serverConfig, appConfig];

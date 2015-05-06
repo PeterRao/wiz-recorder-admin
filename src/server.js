@@ -4,6 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import React from 'react';
+import db from './core/Database';
 import App from './components/App';
 
 const server = express();
@@ -39,7 +40,7 @@ server.get('*', (req, res, next) => {
 });
 
 server.listen(server.get('port'), () => {
-  if (process.sed) {
+  if (process.send) {
     process.send('online');
   } else {
     console.log('The server is running at http://localhost:' +
