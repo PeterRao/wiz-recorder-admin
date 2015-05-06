@@ -15,4 +15,6 @@ function run() {
   React.render(element, document.body);
 }
 
-run();
+window.addEventListener('load', function () {
+  run();
+}, false);
