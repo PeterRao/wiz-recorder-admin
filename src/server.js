@@ -4,7 +4,7 @@ import fs from 'fs';
 import path from 'path';
 import express from 'express';
 import React from 'react';
-import db from './core/Database';
+//import db from './core/Database';
 import App from './components/App';
 
 const server = express();
@@ -17,24 +17,30 @@ const template = _.template(fs.readFileSync(templateFile, 'utf8'));
 
 server.get('*', (req, res, next) => {
   try {
-    let uri = req.path;
+    //let uri = req.path;
     let notFound = false;
+    let css = [];
     let data = {
       description: ''
     };
     let app = <App
       path = { req.path }
-      onSetTitle = { (title) => { data.title = title; } }
-      onPageNotFound = { () => { notFound = true; }}/>;
+      context = {{
+        onInsertCss: value => css.push(value),
+        onSetTitle: value => data.title = value,
+        onSetMeta: (key, value) => data[key] = value,
+        onPageNotFound: () => notFound = true
+      }} />;
 
     data.body = React.renderToString(app);
+    data.css = css.join('');
     if (notFound) {
       res.status(404).send();
     } else {
       let html = template(data);
       res.send(html);
     }
-  } catch(err) {
+  } catch (err) {
     next(err);
   }
 });

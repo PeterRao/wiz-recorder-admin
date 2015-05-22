@@ -38,15 +38,23 @@ gulp.task('bundle', function (cb) {
   var secondStarted = false;
   var config = require('./webpack.config.js');
   var bundler = webpack(config);
+  var verbose = !!argv.verbose;
 
   function bundle(err, stats) {
     if (err) {
       throw new $.util.PluginError('webpack', err);
     }
 
-    if (argv.verbose) {
-      $.util.log('[webpack]', stats.toString({colors: true}));
-    }
+    console.log(stats.toString({
+      colors: $.util.colors.supportsColor,
+      hash: verbose,
+      version: verbose,
+      timings: verbose,
+      chunks: verbose,
+      chunkModules: verbose,
+      cached: verbose,
+      cachedAssets: verbose
+    }));
 
     if (!firstStarted) {
       firstStarted = true;
@@ -130,7 +138,6 @@ gulp.task('sync', ['serve'], function (cb) {
 
   gulp.watch(['build/**/*.*'].concat(
     src.server.map(function (file) {
-      console.log(file.path);
       return '!' + file;
     })
   ), function (file) {

@@ -1,30 +1,35 @@
-import './App.less';
-import React, { PropTypes } from 'react';
+import React, { PropTypes } from 'react'; // eslint-disable-line no-unused-vars
+import styles from './App.less'; // eslint-disable-line no-unused-vars
 import LoginPage from '../LoginPage';
+import Admin from '../Admin';
+
+import { withContext, withStyles } from '../decorators'; // eslint-disable-line no-unused-vars
+
+@withContext
+@withStyles(styles)
 
 class App {
 
   static propTypes = {
-    path: PropTypes.string.isRequired,
-    onSetTitle: PropTypes.func.isRequired,
-    onPageNotFound: PropTypes.func.isRequired
+    path: PropTypes.string.isRequired
   };
 
 
   render() {
+    let component;
     switch (this.props.path) {
-
       case '/':
       case '/login':
-        this.props.onSetTitle(LoginPage.title);
-        this.component = <LoginPage />;
+        component = <LoginPage />;
         break;
-
+      case '/admin':
+        component = <Admin />;
+        break;
       default:
     }
     return (
       <div>
-        {this.component}
+        {component}
       </div>
     );
   }
